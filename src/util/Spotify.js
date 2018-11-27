@@ -1,7 +1,4 @@
 
-let accessToken = '';
-let expiresIn = '';
-
 const config = require('../config/config');
 
 const clientID = config.local.clientID
