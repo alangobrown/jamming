@@ -110,14 +110,14 @@ export class Spotify{
                 }).then(response=>{
                 return response.json()
               }).then(jsonResponse=>{
-                console.log(`**********Playlist Response contains ${JSON.stringify(jsonResponse)}` );
-                let playlistID = jsonResponse.id;
-                console.log(`Saved ${playlistID} to playlistID`);
+                  console.log(`**********Playlist Response contains ${JSON.stringify(jsonResponse)}` );
+                  let playlistID = jsonResponse.id;
+                  console.log(`Saved ${playlistID} to playlistID`);
 
-                //POST TO CREATE THE PLAYLIST
-                const addTracksEndpoint = `${corsAnywhere}https://api.spotify.com/v1/playlists/${playlistID}/tracks`
-                console.log('About to post the following body to add tracks' + JSON.stringify({uris:playlistTracks}))
-                return fetch(addTracksEndpoint, {
+                  //POST TO CREATE THE PLAYLIST
+                  const addTracksEndpoint = `${corsAnywhere}https://api.spotify.com/v1/playlists/${playlistID}/tracks`
+                  console.log('About to post the following body to add tracks' + JSON.stringify({uris:playlistTracks}))
+                  return fetch(addTracksEndpoint, {
                     method: 'POST',
                     body: JSON.stringify({uris:playlistTracks}),
                     headers:{Authorization:`Bearer ${myAccessToken}`}
@@ -127,16 +127,9 @@ export class Spotify{
                         console.log(`**********Add Tracks Response contains ${JSON.stringify(jsonResponse)}` );
 
                       })
-
-
-
-
-                    }
-          )
-        }
-      )
+                })
+              })
       }//End of savePlaylist
-
 
 
 }//End of class
