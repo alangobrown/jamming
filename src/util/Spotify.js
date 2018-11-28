@@ -12,33 +12,36 @@ export class Spotify{
   constructor(props){
     this.search = this.search.bind(this)
     this.getAccessToken = this.getAccessToken.bind(this)
-    console.log('from the constructor in Spotify, the accessToken is ' + accessToken);
+    //console.log('from the constructor in Spotify, the accessToken is ' + accessToken);
   }
 
   getAccessToken(){
-    console.log('A request to getAccessToken has been made. The access token is ' + accessToken)
+    //console.log('A request to getAccessToken has been made. The access token is ' + accessToken)
     if(accessToken!=''){
       //alert(`getAccessToken called but already have one (${accessToken}), so just returning it`)
       return accessToken
     }
     else{
-      console.log(`getAccessToken called but accessToken returns ${accessToken} so checking the URL next`)
+      //console.log(`getAccessToken called but accessToken returns ${accessToken} so checking the URL next`)
       //Check the URL to see if it's been returned
       if(window.location.href.match(/access_token=([^&]*)/) && window.location.href.match(/expires_in=([^&]*)/))
       {
+
         //Set the accessToken and expirationTime
         accessToken = window.location.href.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1];
-        //expiresIn = window.location.href.match(/expires_in=([^&]*)/)
-        var searchParams = new URLSearchParams(window.location.href)
+        const searchParams = new URLSearchParams(window.location.href)
         expiresIn = searchParams.get("expires_in")
-        console.log(`Found in URL - expiresIn=${expiresIn} accessToken=${accessToken} and `)
+        //console.log(`Found in URL - expiresIn=${expiresIn} accessToken=${accessToken} and `)
+
         //Set the accessToken to expire
         window.setTimeout(() => accessToken = '', expiresIn * 1000);
         window.history.pushState('Access Token', null, '/');
+
         return accessToken;
       }
       else{//The accessToken is empty and it's not in the URL
-        console.log(`getAccessToken is not stored, nor present in the URL so redirecting to Spotify to get one`)
+        //console.log(`getAccessToken is not stored, nor present in the URL so redirecting to Spotify to get one`)
+
         //So redirect to Spotify Auth
         const authURL = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURL}`
         window.location = authURL;
@@ -51,17 +54,16 @@ export class Spotify{
   search(term){
 
     const endpoint = `${corsAnywhere}https://api.spotify.com/v1/search?type=track&q=${term}`;
-
     const token = this.getAccessToken();
-    console.log('Spotify.js search method - token is ' + token);
-    //return fetch(endpoint,{headers:{Authorization:`Bearer ${myAccessToken}`}}).then(response=>{
+    //console.log('Spotify.js search method - token is ' + token);
+
+    //Call the Spotify Search API
     return fetch(endpoint,{headers:{Authorization:`Bearer ${token}`}}).then(response=>{
         return response.json()
       }).then(jsonResponse=>{
-        console.log(`**********contains ${JSON.stringify(jsonResponse)}` );
+        //console.log(`**********contains ${JSON.stringify(jsonResponse)}` );
 
-
-
+          //Iterate through the tracks and build an array of results
           if(jsonResponse.tracks){
             return jsonResponse.tracks.items.map(item=>{
               const myItem = {};

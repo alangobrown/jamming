@@ -8,6 +8,7 @@ class Track extends React.Component{
   this.removeTrack = this.removeTrack.bind(this)
   }
 
+  //Conditional function to decide whether to render a + (search results) or a - (playlist)
   renderAction(isRemoval){
     if(isRemoval)
     {
@@ -17,10 +18,12 @@ class Track extends React.Component{
 
   }
 
+  //Call the parents onAdd method
   addTrack(){
     this.props.onAdd(this.props.track)
   }
 
+  //Call the parents onRemove method
   removeTrack(){
     this.props.onRemove(this.props.track)
   }

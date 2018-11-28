@@ -10,7 +10,7 @@ constructor(props){
 }
 
   handleNameChange(event){
-    //alert('Handling a name change to ' + event.target.value)
+    //console.log('Handling a name change to ' + event.target.value)
     this.props.onNameChange(event.target.value)
   }
 

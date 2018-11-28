@@ -16,44 +16,7 @@ class App extends React.Component {
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
 
-    /*this.state = {
-      searchResults:[
-        {
-          id: '001',
-          name: 'Track 001',
-          artist: 'Alan',
-          album: 'The Very, Very Best of AB'
-        },
-        {
-          id: '002',
-          name: 'Track 002',
-          artist: 'Alan',
-          album: 'The Very, Very Best of AB'
-        },
-        {
-          id: '003',
-          name: 'Track 003',
-          artist: 'Alan',
-          album: 'The Very, Very Best of AB'
-        }
-      ],
-      playlistTracks:[
-        {
-          id: '001',
-          name: 'Track 001',
-          artist: 'Alan',
-          album: 'The Very, Very Best of AB'
-        },
-        {
-          id: '005',
-          name: 'Track 005',
-          artist: 'Alan',
-          album: 'The Very, Very Best of AB'
-        }
-      ],
-      playlistName:'Whatta Plalist'
-    }
-    */
+
     this.state = {searchResults:[],playlistTracks:[],playlistName:'New Playlist'};
   }//End of constructor
 
@@ -75,34 +38,39 @@ class App extends React.Component {
   }
 
   updatePlaylistName(name){
-    console.log(`Setting the playlist name to ${name}`)
+    //console.log(`Setting the playlist name to ${name}`)
     this.setState({ playlistName: name});
 
   }
 
   savePlaylist(){
+    //Create an array to store just the URIs for the tracks in the playlist
     let trackURIs =[]
     trackURIs= this.state.playlistTracks.map(a => a.id);
-    console.log('TrackURIs = ' + trackURIs);
+    //console.log('TrackURIs = ' + trackURIs);
+
+    //Make a call to the Spotify method which in turn will make the API requests
     const mySpotify=new Spotify;
     mySpotify.savePlaylist(this.state.playlistName,trackURIs);
+
     //Now clear the tracks from the local playlist and reset the name
-    console.log('About to clear the playlist tracks and name')
+    //console.log('About to clear the playlist tracks and name')
     this.setState({playlistTracks:[]});
-    //TODO - this is not working.  Why????
     this.setState({ playlistName: 'New Playlist'});
   }
 
 
 search(term){
-    console.log('About to search for term - ' + term);
+  //console.log('About to search for term - ' + term);
+
+  //Call the seach method with the search term.  This will in turn call the search API
   const mySpotify=new Spotify;
   mySpotify.search(term).then(tracks=>{
     this.setState({searchResults:tracks})
   })
 }
 
-
+  //Render the main app view, including the Child Components
   render() {
     return (
       <div>
@@ -112,7 +80,6 @@ search(term){
         <div className="App-playlist">
           <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults}/>
           <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove = {this.removeTrack} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}/>
-
         </div>
       </div>
     </div>
