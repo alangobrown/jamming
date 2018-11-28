@@ -67,7 +67,7 @@ export class Spotify{
           if(jsonResponse.tracks){
             return jsonResponse.tracks.items.map(item=>{
               const myItem = {};
-              console.log(`**********contains ${item.name} by ${item.artists[0].name} from album ${item.album.name} [${item.uri}]` );
+              //console.log(`**********contains ${item.name} by ${item.artists[0].name} from album ${item.album.name} [${item.uri}]` );
               myItem.name = item.name;
               myItem.artist = item.artists[0].name;
               myItem.album = item.album.name;
@@ -77,7 +77,7 @@ export class Spotify{
             })
           }
           else{
-            console.log('jsonResponse.tracks is null so returning empty tracks array')
+            //console.log('jsonResponse.tracks is null so returning empty tracks array')
             return []
           }
         })
@@ -85,21 +85,21 @@ export class Spotify{
 
       savePlaylist(playlistName, playlistTracks){
         if(!playlistName && !playlistTracks){
-          console.log(`Aborting save as cannot find playlistName (${playlistName}) or playlistTracks (${playlistTracks})`)
+          //console.log(`Aborting save as cannot find playlistName (${playlistName}) or playlistTracks (${playlistTracks})`)
           return
         }
         const myAccessToken = this.getAccessToken();
         const headers = {headers:{Authorization:`Bearer ${myAccessToken}`}}
-        console.log(`me headers set to ${JSON.stringify(headers)}`)
+        //console.log(`me headers set to ${JSON.stringify(headers)}`)
         let userId =''
 
         const meEndpoint = `${corsAnywhere}https://api.spotify.com/v1/me`
         return fetch(meEndpoint,headers).then(response=>{
             return response.json()
           }).then(jsonResponse=>{
-            console.log(`**********Me Response contains ${JSON.stringify(jsonResponse)}` );
+            //console.log(`**********Me Response contains ${JSON.stringify(jsonResponse)}` );
             userId = jsonResponse.id;
-            console.log(`Saved ${userId} to userId`);
+            //console.log(`Saved ${userId} to userId`);
 
             const newPlaylistEndpoint = `${corsAnywhere}https://api.spotify.com/v1/users/${userId}/playlists`
             //POST TO CREATE THE PLAYLIST
@@ -110,13 +110,13 @@ export class Spotify{
                 }).then(response=>{
                 return response.json()
               }).then(jsonResponse=>{
-                  console.log(`**********Playlist Response contains ${JSON.stringify(jsonResponse)}` );
+                  //console.log(`**********Playlist Response contains ${JSON.stringify(jsonResponse)}` );
                   let playlistID = jsonResponse.id;
-                  console.log(`Saved ${playlistID} to playlistID`);
+                  //console.log(`Saved ${playlistID} to playlistID`);
 
                   //POST TO CREATE THE PLAYLIST
                   const addTracksEndpoint = `${corsAnywhere}https://api.spotify.com/v1/playlists/${playlistID}/tracks`
-                  console.log('About to post the following body to add tracks' + JSON.stringify({uris:playlistTracks}))
+                  //console.log('About to post the following body to add tracks' + JSON.stringify({uris:playlistTracks}))
                   return fetch(addTracksEndpoint, {
                     method: 'POST',
                     body: JSON.stringify({uris:playlistTracks}),
@@ -124,7 +124,7 @@ export class Spotify{
                     }).then(response=>{
                       return response.json()
                       }).then(jsonResponse=>{
-                        console.log(`**********Add Tracks Response contains ${JSON.stringify(jsonResponse)}` );
+                        //console.log(`**********Add Tracks Response contains ${JSON.stringify(jsonResponse)}` );
 
                       })
                 })

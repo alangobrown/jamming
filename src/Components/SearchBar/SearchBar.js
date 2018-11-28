@@ -12,7 +12,7 @@ class SearchBar extends React.Component{
   search(){
     //Call the parent Search method, passing in the term from state
     this.props.onSearch(this.state.term)
-    console.log('Term Submitted is -  ' + this.state.term);
+    //console.log('Term Submitted is -  ' + this.state.term);
   }
 
   handleTermChange(event){
