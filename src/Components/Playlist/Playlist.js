@@ -1,5 +1,5 @@
 import React from 'react';
-import TrackList from '../TrackList/TrackList'
+import PlaylistTrackList from '../PlaylistTrackList/PlaylistTrackList'
 
 import './Playlist.css';
 
@@ -19,7 +19,7 @@ constructor(props){
     return(
       <div className="Playlist">
         <input onChange={this.handleNameChange} value = {this.props.playlistName}/>
-        <TrackList onRemove={this.props.onRemove} isRemoval = {true} tracks={this.props.playlistTracks}/>
+        <PlaylistTrackList onRemove={this.props.onRemove} tracks={this.props.playlistTracks}/>
         <a onClick={this.props.onSave}className="Playlist-save">SAVE TO SPOTIFY</a>
       </div>
       )

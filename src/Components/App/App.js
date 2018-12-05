@@ -15,6 +15,7 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.filterTrackList = this.filterTrackList.bind(this);
 
 
     this.state = {searchResults:[],playlistTracks:[],playlistName:'New Playlist'};
@@ -68,7 +69,16 @@ search(term){
   mySpotify.search(term).then(tracks=>{
     this.setState({searchResults:tracks})
   })
-}
+  }
+
+  //Takes a track list and removes those already in the playlist
+  filterTrackList(){
+
+    console.log(`About to filter Search Results to exclude those in the Playlist (${this.state.playlistTracks})`)
+    return this.state.searchResults.filter(track => !this.state.playlistTracks.find( playlistTrack => playlistTrack.id ===track.id  ));
+    //return tracks.filter(track => track not in playlistTracks);
+
+  }
 
   //Render the main app view, including the Child Components
   render() {
@@ -78,7 +88,7 @@ search(term){
       <div className="App">
       <SearchBar onSearch={this.search}/>
         <div className="App-playlist">
-          <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults}/>
+          <SearchResults filter={this.filterTrackList} onAdd={this.addTrack} searchResults={this.state.searchResults}/>
           <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove = {this.removeTrack} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}/>
         </div>
       </div>
